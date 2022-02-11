@@ -1,18 +1,22 @@
 import 'package:cozy_app/model/city.dart';
 import 'package:cozy_app/model/space.dart';
 import 'package:cozy_app/model/tips.dart';
+import 'package:cozy_app/providers/space_provider.dart';
 import 'package:cozy_app/theme.dart';
 import 'package:cozy_app/widgets/bottom_navbar_item.dart';
 import 'package:cozy_app/widgets/city_card.dart';
 import 'package:cozy_app/widgets/space_card.dart';
 import 'package:cozy_app/widgets/tips_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var spaceProvider = Provider.of<SpaceProvider>(context);
+
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
@@ -110,44 +114,30 @@ class HomePage extends StatelessWidget {
               padding: EdgeInsets.symmetric(
                 horizontal: edge,
               ),
-              child: Column(
-                children: [
-                  SpaceCard(
-                    Space(
-                      id: 1,
-                      name: 'Kuretakeso Hot',
-                      imageUrl: 'assets/space1.png',
-                      price: 52,
-                      city: 'Bandung',
-                      country: 'Germany',
-                      rating: 4,
-                    ),
-                  ),
-                  SizedBox(height: 30),
-                  SpaceCard(
-                    Space(
-                      id: 2,
-                      name: 'Roemah Nenek',
-                      imageUrl: 'assets/space2.png',
-                      price: 11,
-                      city: 'Seattle',
-                      country: 'USA',
-                      rating: 5,
-                    ),
-                  ),
-                  SizedBox(height: 30),
-                  SpaceCard(
-                    Space(
-                      id: 3,
-                      name: 'Darrling How',
-                      imageUrl: 'assets/space3.png',
-                      price: 20,
-                      city: 'Jakarta',
-                      country: 'Indonesia',
-                      rating: 4,
-                    ),
-                  ),
-                ],
+              child: FutureBuilder(
+                future: spaceProvider.getRecommendedSpaces(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<Space> data = snapshot.data;
+
+                    int index = 0;
+
+                    return Column(
+                      children: data.map((item) {
+                        index++;
+                        return Container(
+                          margin: EdgeInsets.only(
+                            top: index == 1 ? 0 : 30,
+                          ),
+                          child: SpaceCard(item),
+                        );
+                      }).toList(),
+                    );
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
               ),
             ),
             SizedBox(height: 30),

@@ -13,7 +13,7 @@ class SpaceCard extends StatelessWidget {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => DetailPage(),
+          builder: (context) => DetailPage(space),
         ),
       ),
       child: Row(
@@ -25,7 +25,12 @@ class SpaceCard extends StatelessWidget {
               width: 130,
               child: Stack(
                 children: [
-                  Image.asset(space.imageUrl),
+                  Image.network(
+                    space.imageUrl,
+                    width: 130,
+                    height: 110,
+                    fit: BoxFit.cover,
+                  ),
                   Align(
                     alignment: Alignment.topRight,
                     child: Container(
@@ -59,38 +64,40 @@ class SpaceCard extends StatelessWidget {
             ),
           ),
           SizedBox(width: 20),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                space.name,
-                style: blackTextStyle.copyWith(
-                  fontSize: 18,
-                ),
-              ),
-              SizedBox(height: 2),
-              Text.rich(
-                TextSpan(
-                  text: '\$${space.price}',
-                  style: purpleTextStyle.copyWith(
-                    fontSize: 16,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  space.name,
+                  style: blackTextStyle.copyWith(
+                    fontSize: 18,
                   ),
-                  children: [
-                    TextSpan(
-                      text: ' / month',
-                      style: greyTextStyle.copyWith(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
                 ),
-              ),
-              SizedBox(height: 16),
-              Text(
-                '${space.city}, ${space.country}',
-                style: greyTextStyle,
-              ),
-            ],
+                SizedBox(height: 2),
+                Text.rich(
+                  TextSpan(
+                    text: '\$${space.price}',
+                    style: purpleTextStyle.copyWith(
+                      fontSize: 16,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: ' / month',
+                        style: greyTextStyle.copyWith(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 16),
+                Text(
+                  '${space.city}, ${space.country}',
+                  style: greyTextStyle,
+                ),
+              ],
+            ),
           ),
         ],
       ),
