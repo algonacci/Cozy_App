@@ -32,10 +32,11 @@ class CityCard extends StatelessWidget {
                           height: 30,
                           width: 50,
                           decoration: BoxDecoration(
-                              color: purpleColor,
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(36),
-                              )),
+                            color: purpleColor,
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(36),
+                            ),
+                          ),
                           child: Center(
                             child: Image.asset(
                               'assets/icon_star.png',
@@ -47,12 +48,17 @@ class CityCard extends StatelessWidget {
                     : Container(),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                city.name,
-                style: blackTextStyle.copyWith(
-                  fontSize: 16,
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Expanded(
+                  child: Text(
+                    city.name,
+                    overflow: TextOverflow.ellipsis,
+                    style: blackTextStyle.copyWith(
+                      fontSize: 16,
+                    ),
+                  ),
                 ),
               ),
             ),
